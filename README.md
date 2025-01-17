@@ -38,6 +38,12 @@ ln -s "$(pwd)/arc2bookmarks.py" /usr/local/bin/arc2bookmarks
 # Specify custom output file
 ./arc2bookmarks.py -o my_bookmarks.html
 
+# Export from a specific profile
+./arc2bookmarks.py -p "Profile 1"
+
+# Combine multiple options
+./arc2bookmarks.py -v 5 -o my_bookmarks.html -p "Profile 1"
+
 # Show help
 ./arc2bookmarks.py --help
 ```
@@ -46,6 +52,7 @@ ln -s "$(pwd)/arc2bookmarks.py" /usr/local/bin/arc2bookmarks
 
 - `-v, --min-visits`: Minimum number of visits required (default: 1)
 - `-o, --output`: Output file path (default: arc_bookmarks.html)
+- `-p, --profile`: Arc profile name (default: Default)
 
 ## Importing Bookmarks
 
