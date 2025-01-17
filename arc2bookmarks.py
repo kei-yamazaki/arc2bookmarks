@@ -6,10 +6,14 @@ import sqlite3
 from datetime import datetime
 
 
-def get_arc_history_path():
-    """Get the path to Arc browser's history file"""
+def get_arc_history_path(profile="Default"):
+    """Get the path to Arc browser's history file
+
+    Args:
+        profile (str): Profile name (e.g., "Default", "Profile 1")
+    """
     return os.path.expanduser(
-        "~/Library/Application Support/Arc/User Data/Default/History"
+        f"~/Library/Application Support/Arc/User Data/{profile}/History"
     )
 
 
@@ -44,14 +48,15 @@ def generate_bookmark_html(bookmarks):
     return html
 
 
-def export_bookmarks(min_visits=1, output_file="arc_bookmarks.html"):
+def export_bookmarks(min_visits=1, output_file="arc_bookmarks.html", profile="Default"):
     """Export Arc browser history as Chrome-compatible bookmarks.
 
     Args:
         min_visits (int): Minimum number of visits required for a URL to be exported
         output_file (str): Path to the output HTML file
+        profile (str): Profile name (e.g., "Default", "Profile 1")
     """
-    history_path = get_arc_history_path()
+    history_path = get_arc_history_path(profile)
 
     if not os.path.exists(history_path):
         print(f"Error: History file not found at {history_path}")
@@ -106,7 +111,7 @@ def main():
     parser = argparse.ArgumentParser(
         prog="arc2bookmarks",
         description="Convert Arc browser history to Chrome-compatible bookmarks",
-        epilog="Example: arc2bookmarks -v 5 -o frequently_visited.html",
+        epilog="Example: arc2bookmarks -v 5 -o frequently_visited.html -p 'Profile 1'",
     )
     parser.add_argument(
         "-v",
@@ -121,9 +126,17 @@ def main():
         default="arc_bookmarks.html",
         help="output file path (default: arc_bookmarks.html)",
     )
+    parser.add_argument(
+        "-p",
+        "--profile",
+        default="Default",
+        help="Arc profile name (default: Default)",
+    )
     args = parser.parse_args()
 
-    export_bookmarks(min_visits=args.min_visits, output_file=args.output)
+    export_bookmarks(
+        min_visits=args.min_visits, output_file=args.output, profile=args.profile
+    )
 
 
 if __name__ == "__main__":
